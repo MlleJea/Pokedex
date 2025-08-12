@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "primeflex/primeflex.css";
 
 export const metadata: Metadata = {
   title: "Pokédex",

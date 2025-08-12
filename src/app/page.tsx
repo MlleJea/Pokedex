@@ -27,7 +27,13 @@ export default function Home() {
   }, []);
 
   const itemTemplate = (pokemon: PokemonResponse) => {
-    return <PokemonCard key={pokemon.id} pokemonResponse={pokemon} />;
+    return (
+      <div className="col-12 md:col-6 lg:col-4 xl:col-3">
+        <div className="p-3">
+          <PokemonCard key={pokemon.id} pokemonResponse={pokemon} />
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -47,6 +53,7 @@ export default function Home() {
           value={pokemons}
           key={"localId"}
           itemTemplate={itemTemplate}
+          layout="grid"
           className="PokemonList"
         />
       </main>
