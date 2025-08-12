@@ -1,22 +1,16 @@
 @import "tailwindcss";
+@import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+text {
+  --foreground: #333;
+  --background: #f9f9f9;
+  color: aquamarine;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.p-card {
+  background-color: rgb(224, 219, 219) !important;
+  margin: 5rem !important;
+  color: black !important;
 }
 
 body {
