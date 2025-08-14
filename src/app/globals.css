@@ -9,12 +9,35 @@ text {
 
 .p-card {
   width: 20rem;
+  height: 30rem;
 }
 
 .p-card-header {
   flex: auto;
   align-items: center !important;
   justify-content: center !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+}
+
+.p-card-title {
+  height: 1rem;
+  margin: 0%;
+}
+
+.p-card-content {
+  flex: auto;
+  align-items: safe;
+  height: 8rem;
+  margin: 0 0 0 2;
+}
+
+.p-card-body {
+  padding: 0 0 0 5 !important;
+}
+
+.p-card-footer {
+  padding: auto !important;
+  height: 2rem;
 }
 
 body {
@@ -28,4 +51,11 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
   gap: 1rem !important;
   padding: 1rem !important;
+}
+
+.footerCard {
+  display: flex;
+  padding-left: 2;
+  align-self: start;
+  justify-content: space-between;
 }

@@ -6,7 +6,6 @@ import { Card } from "primereact/card";
 import { Badge } from "primereact/badge";
 import React, { useEffect, useState } from "react";
 import { getPokemonById } from "@/lib/api/apiPokemon";
-import { classNames } from "primereact/utils";
 
 export default function PokemonCard({
   pokemonResponse,
@@ -38,19 +37,19 @@ export default function PokemonCard({
   }, [pokemonResponse.id]);
 
   const header = (
-    <div className=" flex align-self-center">
+    <div className=" flex justify-center items-center">
       <Image
         src={imageLink}
         alt={pokemonResponse.name}
-        width={150}
+        width={130}
         height={150}
         style={{ height: "auto", width: "auto" }}
-        className="PokemonCard-Image"
+        className="PokemonCard-Image m-2"
       />
     </div>
   );
 
-  const badgeColor = (type: string): React.CSSProperties => {
+  const typeColor = (type: string): React.CSSProperties => {
     switch (type) {
       case "Plante":
         return { backgroundColor: "#22c55e", color: "#fff" };
@@ -72,9 +71,9 @@ export default function PokemonCard({
   const cardColor = (type: string): React.CSSProperties => {
     switch (type) {
       case "Plante":
-        return { backgroundColor: "#adfac9ff", color: "#fff" };
+        return { backgroundColor: "#adfac9ff", color: "#000000ff" };
       case "Feu":
-        return { backgroundColor: "#f5c8c7ff", color: "#fff" };
+        return { backgroundColor: "#f8a9a7ff", color: "#fff" };
       case "Eau":
         return { backgroundColor: "#b6e7f3ff", color: "#fff" };
       case "Électrique":
@@ -88,14 +87,31 @@ export default function PokemonCard({
     }
   };
 
+  const rarityColor = (rarity: string): React.CSSProperties => {
+    switch (rarity) {
+      case "Une diamant":
+        return { background: "#faf9f7ff", color: "#000" };
+      case "Commun":
+        return { background: "#faf9f7ff", color: "#000" };
+      case "Rare":
+        return { background: "#cc9603ff" };
+      default:
+        return { background: "#fafafaff", color: "#000" };
+    }
+  };
+
   const footer = (
-    <div className="flex justify-between p-4">
+    <div className="footerCard">
       {pokemonWithDetail &&
         pokemonWithDetail.types &&
         pokemonWithDetail.types.length > 0 &&
         pokemonWithDetail.types.map((type, index) => (
-          <Badge key={index} value={type} style={badgeColor(type)} />
+          <Badge key={index} value={type} style={typeColor(type)} />
         ))}
+      <Badge
+        value={pokemonWithDetail?.rarity}
+        style={rarityColor(pokemonWithDetail?.rarity ?? "")}
+      />
     </div>
   );
 
