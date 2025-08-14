@@ -4,21 +4,39 @@ import { PokemonCardType, PokemonResponse } from "@/lib/types/typesPokemon";
 import Image from "next/image";
 import { Card } from "primereact/card";
 import { Badge } from "primereact/badge";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-export default function PokemonCard({ pokemonWithDetail } : {pokemonWithDetail : PokemonCardType}) {
-  const imageLink = `${pokemonWithDetail.image}/high.png`;
+export default function PokemonCard({
+  pokemonWithDetail,
+}: {
+  pokemonWithDetail: PokemonCardType;
+}) {
+  const hasImage =
+    pokemonWithDetail.image && pokemonWithDetail.image.trim() !== "";
+
+  const imageLink = hasImage ? `${pokemonWithDetail.image}/high.png` : "";
 
   const header = (
     <div className=" flex justify-center items-center">
-      <Image
-        src={imageLink}
-        alt={pokemonWithDetail.name}
-        width={130}
-        height={150}
-        style={{ height: "auto", width: "auto" }}
-        className="PokemonCard-Image m-2"
-      />
+      {hasImage ? (
+        <Image
+          src={imageLink}
+          alt={pokemonWithDetail.name}
+          width={130}
+          height={150}
+          style={{ height: "270px", width: "200px" }}
+          className="PokemonCard-Image m-2"
+        />
+      ) : (
+        <div className="flex flex-col items-center justify-center h-[270px] w-[200px] bg-gray-100 rounded-lg border-2 border-dashed border-gray-300">
+          <div className="text-center p-2">
+            <p className="text-xs text-gray-600 font-medium">
+              Pas d'illustration
+            </p>
+            <p className="text-xs text-gray-500">disponible</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 

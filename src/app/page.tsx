@@ -18,31 +18,52 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [numberItems, setNumberItems] = useState(20);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadAllPokemon() {
       try {
+        setLoading(true);
         console.log("Chargement des Pokemons...");
-        const pokemonList = await getAllPokemon(numberItems, page);
+        const pokemonList: PokemonResponse[] = await getAllPokemon(
+          numberItems,
+          page
+        );
 
         console.log("Nombre de Pokemons chargés:", pokemonList.length);
         console.log("Réponse getAllPokemon :", pokemonList);
 
         const details = await Promise.all(
-          pokemonList.map((item) => getPokemonById(item.id))
+          pokemonList.map((item: PokemonResponse) => getPokemonById(item.id))
         );
         setPokemons(details);
         console.log(details);
       } catch (error) {
         console.error("Erreur lors du chargement des Pokémons :", error);
+      } finally {
+        setLoading(false);
       }
     }
     loadAllPokemon();
   }, [page, numberItems]);
 
   const searchPokemon = async (search: string) => {
-    const result = await searchPokemonByName(search);
-    setPokemons(result.results);
+    if (!search.trim()) {
+      window.location.reload();
+    }
+    try {
+      setLoading(true);
+      const pokemonList: PokemonResponse[] | [PokemonResponse] =
+        await searchPokemonByName(search);
+      const details = await Promise.all(
+        pokemonList.map((item: PokemonResponse) => getPokemonById(item.id))
+      );
+      setPokemons(details);
+    } catch (error) {
+      console.error("Erreur lors de la recherche des Pokémons :", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const itemTemplate = (pokemon: PokemonCardType) => {

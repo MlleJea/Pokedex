@@ -1,11 +1,14 @@
-import { PokemonCard, PokemonListResponse } from "../types/typesPokemon";
+import {
+  PokemonCardType,
+  PokemonListResponse,
+  PokemonResponse,
+} from "../types/typesPokemon";
 
 const BASE_URL = "https://api.tcgdex.net/v2/fr";
 
 export async function getAllPokemon(
   limit: number,
-  page?: number,
-  search?: string
+  page?: number
 ): Promise<PokemonListResponse> {
   if (limit && page) {
     const response = await fetch(
@@ -22,7 +25,7 @@ export async function getAllPokemon(
   }
 }
 
-export async function getPokemonById(id: string): Promise<PokemonCard> {
+export async function getPokemonById(id: string): Promise<PokemonCardType> {
   const response = await fetch(`${BASE_URL}/cards/${id}`);
 
   if (!response.ok) {
@@ -33,12 +36,13 @@ export async function getPokemonById(id: string): Promise<PokemonCard> {
 
 export async function searchPokemonByName(
   search: string
-): Promise<PokemonCard> {
+): Promise<PokemonListResponse | [PokemonResponse]> {
   const response = await fetch(`${BASE_URL}/cards?name=${search}`);
 
   if (!response.ok) {
     throw new Error("Erreur lors du chargement des Pokémons");
   }
-
-  return response.json();
+  const data: PokemonListResponse = await response.json();
+  console.log(data);
+  return data;
 }
