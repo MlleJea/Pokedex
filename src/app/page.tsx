@@ -2,15 +2,19 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { getAllPokemon, getPokemonById, searchPokemonByName } from "@/lib/api/apiPokemon";
-import { PokemonListResponse, PokemonResponse } from "@/lib/types/typesPokemon";
+import {
+  getAllPokemon,
+  getPokemonById,
+  searchPokemonByName,
+} from "@/lib/api/apiPokemon";
+import { PokemonCardType, PokemonResponse } from "@/lib/types/typesPokemon";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import { DataView } from "primereact/dataview";
 import { Button } from "primereact/button";
 import { Badge } from "primereact/badge";
 
 export default function Home() {
-  const [pokemons, setPokemons] = useState<PokemonListResponse>();
+  const [pokemons, setPokemons] = useState<PokemonCardType[]>([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [numberItems, setNumberItems] = useState(20);
@@ -22,25 +26,29 @@ export default function Home() {
         const pokemonList = await getAllPokemon(numberItems, page);
 
         console.log("Nombre de Pokemons chargés:", pokemonList.length);
+        console.log("Réponse getAllPokemon :", pokemonList);
 
-        setPokemons(pokemonList);
+        const details = await Promise.all(
+          pokemonList.map((item) => getPokemonById(item.id))
+        );
+        setPokemons(details);
+        console.log(details);
       } catch (error) {
         console.error("Erreur lors du chargement des Pokémons :", error);
       }
     }
     loadAllPokemon();
-  }, []);
+  }, [page, numberItems]);
 
-  const searchPokemon = (search: string) => {
-    const pokemonsSearched = searchPokemonByName(search);
-    setPokemons(pokemonsSearched);
-
+  const searchPokemon = async (search: string) => {
+    const result = await searchPokemonByName(search);
+    setPokemons(result.results);
   };
 
-  const itemTemplate = (pokemon: PokemonResponse) => {
+  const itemTemplate = (pokemon: PokemonCardType) => {
     return (
       <div className="p-3">
-        <PokemonCard key={pokemon.id} pokemonResponse={pokemon} />
+        <PokemonCard key={pokemon.id} pokemonWithDetail={pokemon} />
       </div>
     );
   };
@@ -64,11 +72,10 @@ export default function Home() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <Button name="Rechercher" onClick={() =>searchPokemon(search)} />
+          <Button name="Rechercher" onClick={() => searchPokemon(search)} />
         </div>
         <DataView
           value={pokemons}
-          key={"localId"}
           itemTemplate={itemTemplate}
           layout="grid"
           className="PokemonList"
@@ -77,7 +84,7 @@ export default function Home() {
           <Button
             label="<"
             onClick={() => {
-              page - 1;
+              setPage(page - 1);
             }}
             disabled={page === 1}
           />
@@ -85,7 +92,7 @@ export default function Home() {
           <Button
             label=">"
             onClick={() => {
-              page + 1;
+              setPage(page + 1);
             }}
           />
         </div>

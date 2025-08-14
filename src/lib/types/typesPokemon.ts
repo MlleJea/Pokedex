@@ -1,4 +1,4 @@
-export interface PokemonCard {
+export interface PokemonCardType {
   category: string;
   id: string;
   illustrator: string;
