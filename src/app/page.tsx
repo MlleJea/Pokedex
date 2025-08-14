@@ -16,7 +16,7 @@ export default function Home() {
         console.log("Chargement des Pokemons...");
         const pokemonList = await getAllPokemon(20);
 
-        console.log("Nombre de Pokemons chargés:", pokemonList.length);
+        console.log("Nombre de Pokemons chargés:", pokemonList.results.length);
 
         setPokemons(pokemonList);
       } catch (error) {
@@ -28,10 +28,8 @@ export default function Home() {
 
   const itemTemplate = (pokemon: PokemonResponse) => {
     return (
-      <div className="col-12 md:col-6 lg:col-4 xl:col-3">
-        <div className="p-3">
-          <PokemonCard key={pokemon.id} pokemonResponse={pokemon} />
-        </div>
+      <div className="p-3">
+        <PokemonCard key={pokemon.id} pokemonResponse={pokemon} />
       </div>
     );
   };

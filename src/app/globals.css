@@ -8,9 +8,13 @@ text {
 }
 
 .p-card {
-  background-color: rgb(224, 219, 219) !important;
-  margin: 5rem !important;
-  color: black !important;
+  width: 20rem;
+}
+
+.p-card-header {
+  flex: auto;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 body {
